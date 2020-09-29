@@ -5,6 +5,7 @@ import { GithubContext } from '../context/context';
 
 const Dashboard = () => {
 	const {isLoading} = React.useContext(GithubContext);
+	
 	if (isLoading) {
 		return (
 			<main>
