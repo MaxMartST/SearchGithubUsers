@@ -1,11 +1,16 @@
 import React from 'react';
-import { GithubContext } from '../context/context';
+import { GithubContext, isEmpty } from '../context/context';
 import styled from 'styled-components';
 import { MdBusiness, MdLocationOn, MdLink, MdEmail } from 'react-icons/md';
 import { FaTwitter } from 'react-icons/fa';
 
 const Card = () => {
 	const {githubUser} = React.useContext(GithubContext);
+
+	if (isEmpty(githubUser)) {
+		return null;
+	}
+
 	const {
 		avatar_url, 
 		html_url, 
@@ -18,8 +23,10 @@ const Card = () => {
 		twitter_username
 	} = githubUser;
 
-	const twitter = twitter_username ? <><FaTwitter></FaTwitter>@{twitter_username}</>:null;
-	const email_user = email ? <><MdEmail></MdEmail>@{email}</>:null;
+	const twitter = twitter_username ? <><FaTwitter></FaTwitter>@{twitter_username}</> : null;
+	const email_user = email ? <><MdEmail></MdEmail>@{email}</> : null;
+	const blog_user = blog ? <><MdLink/>{blog}</> : null;
+
   	return (
 		<Wrapper>
 			<header>
@@ -32,12 +39,12 @@ const Card = () => {
 			<p className='bio'>{bio}</p>
 			<div className='links'>
 				<p>
-					<MdBusiness></MdBusiness> {company}
+					<MdBusiness/>{company || 'not data'}
 				</p>
 				<p>
-					<MdLocationOn></MdLocationOn> {location || 'earth'}
+					<MdLocationOn/>{location || 'earth'}
 				</p>
-				<a href={`https://${blog}`}><MdLink></MdLink>{blog}</a>
+	  			<a href={`https://${blog}`}>{blog_user}</a>
 				<a href={`https://twitter.com/${twitter_username}`}>{twitter}</a>
 				<a href={`https://mail.google.com/${email}`}>{email_user}</a>
 			</div>

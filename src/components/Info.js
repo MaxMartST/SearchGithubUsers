@@ -1,11 +1,15 @@
 import React from 'react';
-import { GithubContext } from '../context/context';
+import { GithubContext, isEmpty } from '../context/context';
 import styled from 'styled-components';
 import { GoRepo, GoGist } from 'react-icons/go';
 import { FiUsers, FiUserPlus } from 'react-icons/fi';
 
 const UserInfo = () => {
 	const {githubUser} = React.useContext(GithubContext);
+
+	if (isEmpty(githubUser)) {
+		return null;
+	}
 	const {public_repos, followers, following, public_gists} = githubUser;
 	
 	const items = [

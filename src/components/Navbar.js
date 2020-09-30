@@ -15,8 +15,6 @@ const Navbar = () => {
 	} = useAuth0();
 
 	const isUser = isAuthenticated && user;
-	//const {isOpen} = React.useContext(GithubContext);
-	//const isOpen = true;
 	const [isOpen, setClick] = useState(false);
 	const handleClick = () => setClick(!isOpen);
 
@@ -48,7 +46,10 @@ const Navbar = () => {
 						<Link to="/recruitmen">Recruitmen</Link>
 					</li>
 					<li>
-						{isUser && <button onClick={() => {logout({returnTo: window.location.origin})}}>logout</button>}
+						{isUser && <button onClick={() => {
+							localStorage.clear();
+							logout({returnTo: window.location.origin})}}>logout</button>
+						}
 					</li>
 				</ul>
 

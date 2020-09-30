@@ -5,16 +5,40 @@ import mockFollowers from './mockData.js/mockFollowers';
 import axios from 'axios';
 
 const rootUrl = 'https://api.github.com';
-
 const GithubContext = React.createContext();
 
 const GithubProvider = ({children}) => {
-    //open burger menu
-    //const [isOpen, setBurger] = useState(false);
 
-    const [githubUser, setGithubUser] = useState(mockUser);
-    const [repos, setRepos] = useState(mockRepos);
-    const [followers, setFollowers] = useState(mockFollowers);
+    let gitUser, gitRepos, gitFollowers;
+
+    gitUser = localStorageData('user');
+    gitRepos = localStorageData('repos');
+    gitFollowers = localStorageData('followers');
+
+    // if (localStorage.getItem('user')) {
+    //     gitUser = JSON.parse(localStorage.getItem('user'));
+    // } else {
+    //     gitUser = JSON.stringify({});
+    //     localStorage.setItem('user', gitUser);
+    // }
+
+    // if (localStorage.getItem('repos')) {
+    //     gitRepos = JSON.parse(localStorage.getItem('repos'));
+    // } else {
+    //     const repos = JSON.stringify({});
+    //     localStorage.setItem('repos', repos);
+    // }
+
+    // if (localStorage.getItem('followers')) {
+    //     gitFollowers = JSON.parse(localStorage.getItem('followers'));
+    // } else {
+    //     const followers = JSON.stringify({});
+    //     localStorage.setItem('followers', followers);
+    // }
+
+    const [githubUser, setGithubUser] = useState(gitUser);
+    const [repos, setRepos] = useState(gitRepos);
+    const [followers, setFollowers] = useState(gitFollowers);
 
     //request loading
     const [requests, setRequests] = useState(0);
@@ -32,6 +56,8 @@ const GithubProvider = ({children}) => {
 
         if (response) {
             setGithubUser(response.data);
+            localStorage.setItem('user', JSON.stringify(response.data));
+            //console.log(githubUser);
             
             const {login, followers_url} = response.data;
             await Promise.allSettled([
@@ -43,10 +69,14 @@ const GithubProvider = ({children}) => {
                 const status = 'fulfilled';
 
                 if (repos.status === status) {
+                    const reposUser = JSON.stringify(repos.value.data);
+                    localStorage.setItem('repos', reposUser);
                     setRepos(repos.value.data);
                 }
 
                 if (followers.status === status) {
+                    const followersUser = JSON.stringify(followers.value.data);
+                    localStorage.setItem('followers', followersUser);
                     setFollowers(followers.value.data);
                 }
             });
@@ -95,4 +125,19 @@ const GithubProvider = ({children}) => {
     );
 }
 
-export {GithubProvider, GithubContext};
+const localStorageData = (key) => {
+    let value;
+
+    if (localStorage.getItem(key)) {
+        value = JSON.parse(localStorage.getItem(key));
+    } else {
+        value = JSON.stringify({});
+        localStorage.setItem(key, value);
+    }
+
+    return value;
+};
+
+const isEmpty = (x) => !Object.keys(x).length;
+
+export {GithubProvider, GithubContext, isEmpty};
