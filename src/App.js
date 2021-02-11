@@ -5,19 +5,20 @@ import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-d
 function App() {
 	return (
 		<AuthWrapper>
-			<Router>
-				<PrivateRoute path='/'>
-					<Navigation/>
-					<Redirect from='/' to='/dashboard'></Redirect>
-				</PrivateRoute>
-				<Switch>
-					<Route path='/dashboard' component={Dashboard}/>
-					<Route path='/recruitmen' component={Recruitmen}/>
-					<Route path='/login' component={Login}/>
-					<Route path='*' component={Error}/>
-				</Switch>
-			</Router>
-		</AuthWrapper>
+		<Router>
+		  <Switch>
+			<PrivateRoute path='/' exact={true}>
+			  <Dashboard></Dashboard>
+			</PrivateRoute>
+			<Route path='/login'>
+			  <Login></Login>
+			</Route>
+			<Route path='*'>
+			  <Error></Error>
+			</Route>
+		  </Switch>
+		</Router>
+	  </AuthWrapper>
 	);
 }
 

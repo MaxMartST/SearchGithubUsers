@@ -8,33 +8,11 @@ const rootUrl = 'https://api.github.com';
 const GithubContext = React.createContext();
 
 const GithubProvider = ({children}) => {
-
     let gitUser, gitRepos, gitFollowers;
 
     gitUser = localStorageData('user');
     gitRepos = localStorageData('repos');
     gitFollowers = localStorageData('followers');
-
-    // if (localStorage.getItem('user')) {
-    //     gitUser = JSON.parse(localStorage.getItem('user'));
-    // } else {
-    //     gitUser = JSON.stringify({});
-    //     localStorage.setItem('user', gitUser);
-    // }
-
-    // if (localStorage.getItem('repos')) {
-    //     gitRepos = JSON.parse(localStorage.getItem('repos'));
-    // } else {
-    //     const repos = JSON.stringify({});
-    //     localStorage.setItem('repos', repos);
-    // }
-
-    // if (localStorage.getItem('followers')) {
-    //     gitFollowers = JSON.parse(localStorage.getItem('followers'));
-    // } else {
-    //     const followers = JSON.stringify({});
-    //     localStorage.setItem('followers', followers);
-    // }
 
     const [githubUser, setGithubUser] = useState(gitUser);
     const [repos, setRepos] = useState(gitRepos);
